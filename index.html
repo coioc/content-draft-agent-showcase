@@ -1,0 +1,726 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="内容初稿生产 Agent 展示页：展示功能、工作流、质量规范、能力边界与模拟运行体验。公开演示模式，不连接真实权限、不接 API、不读取私有数据。" />
+  <title>内容初稿生产 Agent｜公开展示页</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #11182c;
+      --panel: rgba(255,255,255,.08);
+      --panel-strong: rgba(255,255,255,.12);
+      --text: #f7f8fb;
+      --muted: #aab3c8;
+      --muted-2: #7f8aa3;
+      --line: rgba(255,255,255,.16);
+      --brand: #8b5cf6;
+      --brand-2: #06b6d4;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --card-shadow: 0 18px 60px rgba(0,0,0,.32);
+      --radius: 24px;
+      --max: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(139,92,246,.38), transparent 34%),
+        radial-gradient(circle at 76% 8%, rgba(6,182,212,.30), transparent 30%),
+        linear-gradient(180deg, #080c18 0%, var(--bg) 42%, #0a0f1c 100%);
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(8,12,24,.70);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 750;
+      letter-spacing: .2px;
+    }
+    .logo {
+      width: 34px; height: 34px;
+      display: grid; place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 10px 28px rgba(139,92,246,.32);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,.08); color: var(--text); }
+
+    .hero {
+      padding: 84px 0 52px;
+      position: relative;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #dfe7ff;
+      background: rgba(255,255,255,.07);
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+    .dot { width: 8px; height: 8px; background: var(--ok); border-radius: 50%; box-shadow: 0 0 0 6px rgba(34,197,94,.12); }
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: .96;
+      margin: 0 0 22px;
+      letter-spacing: -2.6px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 10%, #b7c4ff 42%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead {
+      font-size: clamp(18px, 2.2vw, 22px);
+      color: #d7def2;
+      margin: 0 0 26px;
+      max-width: 720px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 13px 18px;
+      color: #fff;
+      font-weight: 700;
+      background: rgba(255,255,255,.10);
+      border: 1px solid var(--line);
+      transition: .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.15); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border: 0;
+      box-shadow: 0 15px 40px rgba(6,182,212,.18);
+    }
+    .btn-primary:hover { filter: brightness(1.06); }
+
+    .hero-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.06));
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+    .terminal-head {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,.16);
+    }
+    .bubble { width: 11px; height: 11px; border-radius: 50%; background: #fb7185; }
+    .bubble:nth-child(2) { background: #fbbf24; }
+    .bubble:nth-child(3) { background: #34d399; }
+    .terminal-body { padding: 20px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; color: #dbeafe; }
+    .terminal-line { margin: 0 0 10px; color: #cbd5e1; }
+    .terminal-line strong { color: #fff; }
+    .terminal-line .green { color: #86efac; }
+    .metric-row { display: grid; grid-template-columns: repeat(3,1fr); border-top: 1px solid var(--line); }
+    .metric { padding: 16px; border-right: 1px solid var(--line); }
+    .metric:last-child { border-right: 0; }
+    .metric b { display: block; font-size: 25px; letter-spacing: -.5px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+
+    section { padding: 54px 0; }
+    .section-head { max-width: 760px; margin-bottom: 22px; }
+    .kicker { color: #67e8f9; font-weight: 800; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { margin: 8px 0 10px; font-size: clamp(28px, 4vw, 44px); line-height: 1.12; letter-spacing: -1.3px; }
+    .desc { color: var(--muted); margin: 0; font-size: 17px; }
+
+    .grid { display: grid; gap: 16px; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      padding: 22px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.14);
+    }
+    .card h3 { margin: 0 0 9px; font-size: 19px; }
+    .card p { margin: 0; color: var(--muted); }
+    .icon {
+      width: 40px; height: 40px;
+      display: grid; place-items: center;
+      border-radius: 14px;
+      background: rgba(139,92,246,.18);
+      margin-bottom: 12px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      counter-reset: flow;
+    }
+    .flow-step {
+      position: relative;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.07);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 128px;
+    }
+    .flow-step::before {
+      counter-increment: flow;
+      content: counter(flow);
+      display: inline-grid;
+      place-items: center;
+      width: 28px; height: 28px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+    .flow-step b { display: block; margin-bottom: 6px; }
+    .flow-step span { color: var(--muted); font-size: 14px; }
+
+    .demo-box {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.06));
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+    .demo-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+    .demo-top p { margin: 4px 0 0; color: var(--muted); }
+    .demo-main { display: grid; grid-template-columns: .9fr 1.1fr; gap: 0; }
+    .demo-side { padding: 22px; border-right: 1px solid var(--line); }
+    .demo-output { padding: 22px; min-height: 520px; background: rgba(0,0,0,.10); }
+    .select-label { display: block; color: var(--muted); margin-bottom: 8px; font-size: 14px; }
+    select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 14px;
+      outline: none;
+      font: inherit;
+      resize: vertical;
+    }
+    select option { background: #111827; color: #fff; }
+    textarea { min-height: 150px; margin: 12px 0; }
+    .notice {
+      border: 1px solid rgba(34,197,94,.28);
+      background: rgba(34,197,94,.08);
+      color: #dcfce7;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    .log { display: grid; gap: 9px; margin-bottom: 18px; }
+    .log-item {
+      display: flex; gap: 10px; align-items: flex-start;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.05);
+      opacity: .55;
+      transform: translateY(3px);
+      transition: .28s ease;
+    }
+    .log-item.active { opacity: 1; transform: translateY(0); color: #e8eefc; border-color: rgba(6,182,212,.36); }
+    .log-item.done .status { background: var(--ok); }
+    .status { flex: 0 0 auto; width: 10px; height: 10px; margin-top: 8px; border-radius: 50%; background: var(--muted-2); }
+    .result {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(255,255,255,.06);
+    }
+    .result.show { display: block; animation: fade .35s ease; }
+    .result h3 { margin: 0 0 10px; }
+    .result h4 { margin: 18px 0 7px; color: #dbeafe; }
+    .result p, .result li { color: #cbd5e1; }
+    .result ul { padding-left: 20px; }
+    @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .spec-list { display: grid; gap: 10px; }
+    .spec {
+      display: flex; gap: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .spec b { display: block; }
+    .spec span { color: var(--muted); }
+    .check { flex: 0 0 auto; color: #86efac; font-weight: 900; }
+    .boundary .check { color: #fca5a5; }
+
+    .manual {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255,255,255,.06);
+      overflow: hidden;
+    }
+    .manual details { border-bottom: 1px solid var(--line); }
+    .manual details:last-child { border-bottom: 0; }
+    .manual summary {
+      cursor: pointer;
+      padding: 18px 20px;
+      font-weight: 750;
+      list-style: none;
+    }
+    .manual summary::-webkit-details-marker { display: none; }
+    .manual details[open] summary { background: rgba(255,255,255,.06); }
+    .manual-content { padding: 0 20px 20px; color: var(--muted); }
+    .manual-content code, .code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(0,0,0,.24);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: #f8fafc;
+    }
+    pre {
+      margin: 12px 0 0;
+      white-space: pre-wrap;
+      background: rgba(0,0,0,.24);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 14px;
+      border-radius: 14px;
+      color: #e5e7eb;
+      overflow: auto;
+    }
+
+    .screenshot-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .shot {
+      min-height: 210px;
+      border: 1px dashed rgba(255,255,255,.28);
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+    }
+    .shot b { color: #fff; display: block; margin-bottom: 6px; }
+
+    footer {
+      padding: 36px 0 50px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      margin-top: 30px;
+    }
+    .footer-inner { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .badge { color: #dbeafe; background: rgba(255,255,255,.08); border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; font-size: 13px; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .demo-main, .grid-2 { grid-template-columns: 1fr; }
+      .grid-3, .flow, .screenshot-grid { grid-template-columns: 1fr 1fr; }
+      .demo-side { border-right: 0; border-bottom: 1px solid var(--line); }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 26px, var(--max)); }
+      .hero { padding-top: 52px; }
+      .grid-3, .flow, .screenshot-grid, .metric-row { grid-template-columns: 1fr; }
+      .metric { border-right: 0; border-bottom: 1px solid var(--line); }
+      .metric:last-child { border-bottom: 0; }
+      h1 { letter-spacing: -1.6px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top"><span class="logo">✦</span><span>内容初稿生产 Agent</span></a>
+      <div class="nav-links">
+        <a href="#features">功能</a>
+        <a href="#flow">流程</a>
+        <a href="#demo">模拟体验</a>
+        <a href="#standards">规范</a>
+        <a href="#boundary">边界</a>
+        <a href="#manual">说明书</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span>公开演示模式 · 不接 API · 不访问私有数据</div>
+          <h1><span class="gradient-text">把素材变成</span><br />可打磨发布的内容初稿</h1>
+          <p class="lead">一个用于教育内容、小红书笔记和公众号初稿生产的 Agent 展示页。它展示功能、工作流、质量规范和能力边界，并提供一次不连接真实系统的模拟运行体验。</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#demo">查看模拟运行</a>
+            <a class="btn" href="#manual">阅读使用说明</a>
+            <a class="btn" href="#boundary">查看能力边界</a>
+          </div>
+          <div class="badge-row">
+            <span class="badge">素材读取兜底</span>
+            <span class="badge">历史查重</span>
+            <span class="badge">主命题稳定性检查</span>
+            <span class="badge">发布成熟度自检</span>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Agent 运行摘要">
+          <div class="terminal-head"><span class="bubble"></span><span class="bubble"></span><span class="bubble"></span></div>
+          <div class="terminal-body">
+            <p class="terminal-line">$ run content-draft-agent --demo</p>
+            <p class="terminal-line"><span class="green">✓</span> 素材完整性检查通过</p>
+            <p class="terminal-line"><span class="green">✓</span> 账号方向匹配：学习方法 / 学生成长</p>
+            <p class="terminal-line"><span class="green">✓</span> 历史查重：未发现高重复选题</p>
+            <p class="terminal-line"><span class="green">✓</span> 输出：标题 / 正文 / 标签 / 配图建议 / 发布时间</p>
+            <p class="terminal-line"><strong>status:</strong> public showcase only</p>
+          </div>
+          <div class="metric-row">
+            <div class="metric"><b>90–150m</b><span>人工初稿耗时</span></div>
+            <div class="metric"><b>10–20m</b><span>Agent 协作耗时</span></div>
+            <div class="metric"><b>0 API</b><span>公开页真实调用</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Capabilities</div>
+          <h2>它能展示哪些能力</h2>
+          <p class="desc">这个页面展示的是 Agent 的工作方式和质量标准，不开放真实执行权限。</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="card"><div class="icon">📥</div><h3>素材读取</h3><p>支持小红书链接、公众号链接、复制正文、截图、本地 MD / HTML / Word / PDF 等素材入口。</p></article>
+          <article class="card"><div class="icon">🔎</div><h3>可用性判断</h3><p>判断是否真实读取到标题、正文和图片，不把页面壳误判为可用素材。</p></article>
+          <article class="card"><div class="icon">🧭</div><h3>账号匹配</h3><p>判断素材是否符合学习方法、学生成长、资料包转化等账号方向。</p></article>
+          <article class="card"><div class="icon">🧬</div><h3>历史查重</h3><p>对比历史内容角度，发现高重复选题时暂停交给人工确认。</p></article>
+          <article class="card"><div class="icon">✍️</div><h3>初稿生成</h3><p>输出标题、正文、标签、配图建议、发布平台、发布时间等完整模块。</p></article>
+          <article class="card"><div class="icon">✅</div><h3>发布自检</h3><p>检查主命题、攻击性表达、数据来源、价值边界、行动颗粒度和公开稿成熟度。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Workflow</div>
+          <h2>不是随便写文案，而是一条可检查的工作流</h2>
+          <p class="desc">Agent 先判断素材是否能用，再生成内容；素材不可读时必须停止。</p>
+        </div>
+        <div class="flow">
+          <div class="flow-step"><b>输入素材</b><span>接收链接、正文、截图或本地文件。</span></div>
+          <div class="flow-step"><b>读取验证</b><span>确认真实读到标题、正文和图片。</span></div>
+          <div class="flow-step"><b>方向判断</b><span>判断是否符合账号定位和资料包价值。</span></div>
+          <div class="flow-step"><b>历史查重</b><span>检查相似度，避免重复创作。</span></div>
+          <div class="flow-step"><b>角度生成</b><span>基于素材和历史表现生成差异化方向。</span></div>
+          <div class="flow-step"><b>初稿生产</b><span>生成标题、正文、标签和配图建议。</span></div>
+          <div class="flow-step"><b>质量检查</b><span>审查主命题、数据、攻击性和行动落地。</span></div>
+          <div class="flow-step"><b>文档交付</b><span>写入飞书文档并回查是否成功。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Simulation</div>
+          <h2>模拟一次真实运行，但不连接真实系统</h2>
+          <p class="desc">按钮只触发前端动画和预置样例，不访问飞书、不调用 Codex/Hermes、不保存输入。</p>
+        </div>
+        <div class="demo-box">
+          <div class="demo-top">
+            <div>
+              <h3 style="margin:0">公开演示 Demo</h3>
+              <p>选择素材后点击按钮，查看 Agent 的标准运行轨迹。</p>
+            </div>
+            <button class="btn btn-primary" id="runDemo">模拟生成一篇小红书初稿</button>
+          </div>
+          <div class="demo-main">
+            <div class="demo-side">
+              <label class="select-label" for="scenario">演示素材</label>
+              <select id="scenario">
+                <option value="study">学习方法素材：低效努力</option>
+                <option value="resource">资料包转化素材：错题模板</option>
+                <option value="longform">公众号长文素材：学习复盘</option>
+              </select>
+              <textarea id="fakeInput" aria-label="演示输入">素材：一篇关于学生低效努力的小红书笔记正文
+账号方向：学习方法 / 学生成长 / 资料包转化
+发布平台：小红书
+历史内容：暂不提供</textarea>
+              <div class="notice">安全提示：这是静态演示，不会上传文本，不会连接你的 Agent，也不会调用任何 API。</div>
+            </div>
+            <div class="demo-output">
+              <div class="log" id="log"></div>
+              <div class="result" id="result">
+                <h3>演示输出：小红书内容初稿</h3>
+                <h4>标题</h4>
+                <p id="outTitle">别再死磕努力了，真正会学习的人都在用这 3 个方法</p>
+                <h4>正文节选</h4>
+                <p id="outBody">很多学生以为学习成绩上不去，是因为自己不够努力。但真正的问题往往不是努力不够，而是方法太散、反馈太慢、复盘太少。你可以先做三件事：每天只抓一个核心问题；把错题变成原因清单；每周做一次 20 分钟复盘。</p>
+                <h4>标签</h4>
+                <p id="outTags">#学习方法 #学生成长 #高效学习 #错题整理 #学习复盘</p>
+                <h4>配图建议</h4>
+                <ul id="outImage">
+                  <li>封面关键词：别再低效努力</li>
+                  <li>图片数量：3–5 张</li>
+                  <li>版式方向：第一张强标题，后续每张讲一个步骤</li>
+                </ul>
+                <h4>发布前自检</h4>
+                <ul>
+                  <li>主命题不过度绝对：通过</li>
+                  <li>正文能支撑标题：通过</li>
+                  <li>无攻击性表达：通过</li>
+                  <li>无无来源数据：通过</li>
+                  <li>实操建议可当天执行：通过</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="standards">
+      <div class="wrap grid grid-2">
+        <div>
+          <div class="section-head">
+            <div class="kicker">Standards</div>
+            <h2>公开稿质量规范</h2>
+            <p class="desc">核心目标：让内容能面对半信半疑读者，而不是只强化同温层共识。</p>
+          </div>
+        </div>
+        <div class="spec-list">
+          <div class="spec"><span class="check">✓</span><div><b>主命题稳定</b><span>标题和开头的核心判断必须能被正文证明，正文只证明“值得尝试”时，不得写成“必须”。</span></div></div>
+          <div class="spec"><span class="check">✓</span><div><b>数据有来源</b><span>所有数字、比例、市场规模、趋势判断必须有来源、年份、地区或口径；无法确认就删除或定性化。</span></div></div>
+          <div class="spec"><span class="check">✓</span><div><b>降低攻击性</b><span>删除贬低读者、羞辱失败者、道德审判、性别/关系攻击等表达，改成解释型表达。</span></div></div>
+          <div class="spec"><span class="check">✓</span><div><b>行动要落地</b><span>实操建议必须具体到动作、示例和完成标准；方法过泛时补成 7 天行动表。</span></div></div>
+          <div class="spec"><span class="check">✓</span><div><b>保留边界</b><span>必须承认不是每个人都适合创业、辞职或创作者路径，避免把变富写成道德绑架。</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="boundary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Boundary</div>
+          <h2>能力边界：知道不能做什么，才值得信任</h2>
+          <p class="desc">公开展示页不开放真实调用，真实 Agent 也必须遵守异常处理规则。</p>
+        </div>
+        <div class="grid grid-3 boundary">
+          <div class="card"><div class="icon">🚫</div><h3>不绕过风控</h3><p>小红书反爬、登录限制、IP 风险或空内容时，必须停止读取。</p></div>
+          <div class="card"><div class="icon">🚫</div><h3>不编造素材</h3><p>不得为了推进流程而编造标题、正文、图片或作者观点。</p></div>
+          <div class="card"><div class="icon">🚫</div><h3>不伪造数据</h3><p>数据缺少来源、年份、地区或口径时，不得作为强论据使用。</p></div>
+          <div class="card"><div class="icon">🚫</div><h3>不保证爆款</h3><p>它提高初稿生产效率和规范性，但不承诺流量结果。</p></div>
+          <div class="card"><div class="icon">🚫</div><h3>不替代人工审核</h3><p>涉及敏感、争议、医疗、法律、投资等内容必须人工确认。</p></div>
+          <div class="card"><div class="icon">🚫</div><h3>不开放真实权限</h3><p>这个网页只做展示，不接你的 API，不连接飞书，不读取私有数据。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Evidence</div>
+          <h2>成功运行截图区域</h2>
+          <p class="desc">把你的真实截图替换进这里，会比文字说明更有说服力。</p>
+        </div>
+        <div class="screenshot-grid">
+          <div class="shot"><div><b>运行成功截图</b>建议放 Codex / Hermes 完成状态，带时间戳。</div></div>
+          <div class="shot"><div><b>飞书文档截图</b>建议展示文档标题、目录位置、创建时间。</div></div>
+          <div class="shot"><div><b>输出内容截图</b>建议展示标题、正文、标签、配图建议模块。</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="manual">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Manual</div>
+          <h2>Agent 使用说明书</h2>
+          <p class="desc">陌生人看完这段，就知道如何准备素材、如何触发、如何验收。</p>
+        </div>
+        <div class="manual">
+          <details open>
+            <summary>它是什么</summary>
+            <div class="manual-content">这是一个内容初稿生产 Agent：把选题、素材、历史内容和账号知识库，整理成一篇经过质量检查、可继续人工打磨发布的小红书 / 公众号内容初稿。</div>
+          </details>
+          <details>
+            <summary>省了什么人工</summary>
+            <div class="manual-content">之前人工完成素材读取、提炼、判断、查重、写作和建档，单篇约 90–150 分钟；现在由 Agent 执行标准流程，单篇约 10–20 分钟。</div>
+          </details>
+          <details>
+            <summary>输入什么</summary>
+            <div class="manual-content">输入内容素材、账号方向、发布平台、历史内容数据和补充要求。素材可以是小红书链接、公众号链接、复制正文、截图或本地文件；链接打不开时必须改用正文、截图或文件。</div>
+          </details>
+          <details>
+            <summary>如何触发</summary>
+            <div class="manual-content">
+              <pre>请执行【内容初稿生产】流程。
+
+素材：{粘贴正文 / 链接 / 文件路径}
+账号方向：学习方法 / 学生成长 / 资料包转化
+发布平台：小红书 / 公众号
+历史内容：飞书历史内容库链接 / 暂无
+补充要求：语气适合初中生家长，结尾引导领取资料包</pre>
+            </div>
+          </details>
+          <details>
+            <summary>如何验收</summary>
+            <div class="manual-content">检查标题是否过猛、正文是否具体、数据是否有来源、是否存在攻击性表达、是否有配图建议和发布时间、是否完成发布前质量检查、是否写入飞书文档并回查。</div>
+          </details>
+          <details>
+            <summary>何时人工介入</summary>
+            <div class="manual-content">素材打不开、标题/正文/图片缺失、历史内容库无法访问、选题匹配不确定、查重相似度达到 60% 以上、内容涉及高风险领域，或修正后仍像个人宣言稿时，必须人工确认。</div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div>
+        <b>内容初稿生产 Agent 展示页</b><br />公开展示功能、规范、工作流和边界；不开放真实调用权限。
+      </div>
+      <div>Public Showcase · Static Demo · No API · No Private Data</div>
+    </div>
+  </footer>
+
+  <script>
+    const scenarios = {
+      study: {
+        input: '素材：一篇关于学生低效努力的小红书笔记正文\n账号方向：学习方法 / 学生成长 / 资料包转化\n发布平台：小红书\n历史内容：暂不提供',
+        title: '别再死磕努力了，真正会学习的人都在用这 3 个方法',
+        body: '很多学生以为学习成绩上不去，是因为自己不够努力。但真正的问题往往不是努力不够，而是方法太散、反馈太慢、复盘太少。你可以先做三件事：每天只抓一个核心问题；把错题变成原因清单；每周做一次 20 分钟复盘。',
+        tags: '#学习方法 #学生成长 #高效学习 #错题整理 #学习复盘',
+        image: ['封面关键词：别再低效努力', '图片数量：3–5 张', '版式方向：第一张强标题，后续每张讲一个步骤']
+      },
+      resource: {
+        input: '素材：一份错题复盘模板介绍\n账号方向：资料包转化 / 学习方法\n发布平台：小红书\n历史内容：可访问历史选题库',
+        title: '错题本别再抄答案了，这张表才是真正提分的关键',
+        body: '很多错题本没有效果，是因为它只记录了“错了什么”，没有记录“为什么错”。更有效的做法是把错题拆成四列：知识点、错误原因、正确路径、下次提醒。这样复习时看到的不是答案，而是自己的薄弱环节。',
+        tags: '#错题本 #学习资料 #学习方法 #学生提分 #资料领取',
+        image: ['封面关键词：错题本真正用法', '图片数量：4–6 张', '版式方向：展示模板前后对比和填写示例']
+      },
+      longform: {
+        input: '素材：一篇关于每周学习复盘的公众号长文\n账号方向：学生成长 / 学习方法\n发布平台：公众号\n历史内容：暂不提供',
+        title: '真正拉开成绩差距的，不是努力，而是每周这 20 分钟',
+        body: '学习复盘不是写总结，而是找到下周最该改变的一个动作。建议每周固定 20 分钟回答三个问题：这周最有效的学习动作是什么？最浪费时间的动作是什么？下周只保留哪一个改进动作？',
+        tags: '#学习复盘 #学生成长 #高效学习 #学习规划',
+        image: ['封面关键词：每周 20 分钟复盘', '图片数量：公众号头图 + 文内流程图', '版式方向：清晰、克制、适合长文阅读']
+      }
+    };
+
+    const steps = [
+      'Step 1 / 7：读取素材，不连接真实系统',
+      'Step 2 / 7：判断标题、正文、图片是否完整',
+      'Step 3 / 7：匹配账号方向和资料包价值',
+      'Step 4 / 7：模拟历史查重，未发现高重复选题',
+      'Step 5 / 7：生成差异化内容角度',
+      'Step 6 / 7：生成标题、正文、标签、配图建议',
+      'Step 7 / 7：执行发布前质量检查'
+    ];
+
+    const scenarioEl = document.getElementById('scenario');
+    const fakeInput = document.getElementById('fakeInput');
+    const runDemo = document.getElementById('runDemo');
+    const log = document.getElementById('log');
+    const result = document.getElementById('result');
+
+    function fillScenario() {
+      const data = scenarios[scenarioEl.value];
+      fakeInput.value = data.input;
+      document.getElementById('outTitle').textContent = data.title;
+      document.getElementById('outBody').textContent = data.body;
+      document.getElementById('outTags').textContent = data.tags;
+      const list = document.getElementById('outImage');
+      list.innerHTML = data.image.map(item => `<li>${item}</li>`).join('');
+    }
+
+    function renderLog() {
+      log.innerHTML = steps.map((step, index) => `<div class="log-item" data-index="${index}"><span class="status"></span><span>${step}</span></div>`).join('');
+    }
+
+    async function runSimulation() {
+      fillScenario();
+      renderLog();
+      result.classList.remove('show');
+      runDemo.disabled = true;
+      runDemo.textContent = '模拟运行中…';
+      const items = [...document.querySelectorAll('.log-item')];
+      for (let index = 0; index < items.length; index++) {
+        items[index].classList.add('active');
+        await new Promise(resolve => setTimeout(resolve, 430));
+        items[index].classList.add('done');
+      }
+      await new Promise(resolve => setTimeout(resolve, 220));
+      result.classList.add('show');
+      runDemo.disabled = false;
+      runDemo.textContent = '重新模拟运行';
+    }
+
+    scenarioEl.addEventListener('change', fillScenario);
+    runDemo.addEventListener('click', runSimulation);
+    fillScenario();
+    renderLog();
+  </script>
+</body>
+</html>
